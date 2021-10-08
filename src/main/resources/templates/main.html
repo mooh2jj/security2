@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>main</title>
 </head>
 <body>
     로그인 이후 보여지는 페이지
-    <a href="/logoutAction">로그아웃</a>
+    <span th:text="${user.member.username}"></span>
+    <a th:href="@{/logoutAction}">로그아웃</a>
+
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to authenticated users.
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        This content is only shown to administrators.
+    </div>
+    <div sec:authorize="hasRole('ROLE_MANAGER')">
+        This content is only shown to managers.
+    </div>
+    <div sec:authorize="hasRole('ROLE_MEMBER')">
+        This content is only shown to members.
+    </div>
+
+    </br>
+    로그인 이후에 세션에 정보로 사용자 정보 보기
+    <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal}"></span>
 </body>
 </html>

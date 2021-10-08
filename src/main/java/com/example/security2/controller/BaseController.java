@@ -1,9 +1,12 @@
 package com.example.security2.controller;
 
+import com.example.security2.config.SecurityUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Controller
 public class BaseController {
 
@@ -26,7 +30,7 @@ public class BaseController {
 
     @GetMapping("/logoutAction")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("logout");
+        log.info("logout");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -37,7 +41,12 @@ public class BaseController {
     }
 
     @GetMapping(value = "/main")
-    public String main() {
+    public String main(Authentication authentication, ModelMap modelMap) {
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        log.info("securityUser: {}", securityUser);
+
+        modelMap.addAttribute("user", securityUser);
+
         return "main";
     }
 
