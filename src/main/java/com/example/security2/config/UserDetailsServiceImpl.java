@@ -37,9 +37,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         /**
-         * 로그인 정상으로 된 이후 해당 아이디로 60초만 유효한 토큰을 발생
+         * 로그인 정상으로 된 이후 해당 아이디로 60초만 유효한 토큰을 발생 => 3분으로
          */
-        String token = jwtService.createToken(username, 60 * 1000);
+        String token = jwtService.createToken(username, 3 * 60 * 1000);
 
         /**
          * response header 에 생성된 토큰을 넣음
